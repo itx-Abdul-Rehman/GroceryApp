@@ -14,7 +14,11 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private List<Items> itemsList;
+    private ItemClickListener clickListener;
 
+    public void onItemClickListener(ItemClickListener clickListener){
+        this.clickListener=clickListener;
+    }
     public MyAdapter(List<Items> itemsList) {
         this.itemsList = itemsList;
     }
@@ -44,7 +48,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         return itemsList.size() ;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imageView;
         TextView itemName,itemDescription;
@@ -54,6 +58,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             itemName=itemView.findViewById(R.id.itemName);
             itemDescription=itemView.findViewById(R.id.description);
 
+            itemView.setOnClickListener(this);
+
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            if(clickListener!=null){
+                clickListener.onCLick(v,getAdapterPosition());
+            }
         }
     }
 }
